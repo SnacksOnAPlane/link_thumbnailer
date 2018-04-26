@@ -111,4 +111,13 @@ describe 'Fixture' do
 
   end
 
+  describe 'Amazon' do
+    let(:url)         { 'https://www.amazon.com/Fishermen-Novel-Chigozie-Obioma-ebook/dp/B00MEMMTD8/ref=br_asw_pdt-5' }
+    let(:html)        { File.open(File.dirname(__FILE__) + '/fixtures/amazon.com.html').read }
+    let(:description) { 'Description from body' }
+
+    it { expect(action.title).to                  eq('The Fishermen: A Novel') }
+    it { expect(action.images.first.src.to_s).to  eq('https://images-na.ssl-images-amazon.com/images/I/51E5JZICKRL._SY346_.jpg') }
+  end
+
 end

@@ -8,14 +8,17 @@ require 'link_thumbnailer/parser'
 require 'link_thumbnailer/models/website'
 require 'link_thumbnailer/scrapers/default/title'
 require 'link_thumbnailer/scrapers/opengraph/title'
+require 'link_thumbnailer/scrapers/amazon/title'
 require 'link_thumbnailer/scrapers/default/description'
 require 'link_thumbnailer/scrapers/opengraph/description'
 require 'link_thumbnailer/scrapers/default/images'
 require 'link_thumbnailer/scrapers/opengraph/images'
+require 'link_thumbnailer/scrapers/amazon/images'
 require 'link_thumbnailer/scrapers/default/videos'
 require 'link_thumbnailer/scrapers/opengraph/videos'
 require 'link_thumbnailer/scrapers/default/favicon'
 require 'link_thumbnailer/scrapers/opengraph/favicon'
+require 'pry'
 
 module LinkThumbnailer
   class Scraper < ::SimpleDelegator
@@ -47,6 +50,9 @@ module LinkThumbnailer
     private
 
     def scraper_class(prefix, name)
+      if [:title, :images].include?(name) && url.host.downcase.end_with?('amazon.com')
+        prefix = :amazon
+      end
       prefix = "::LinkThumbnailer::Scrapers::#{prefix.to_s.camelize}"
       name = name.to_s.camelize
       "#{prefix}::#{name}".constantize
